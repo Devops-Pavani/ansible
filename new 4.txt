@@ -1,0 +1,50 @@
+                Ansible
+Create 4 Servers ( Ubuntu 18 )
+1 is controller
+3 are managed nodes
+   I have named the instances as
+Controller
+Server1
+Server2
+Server3
+Connect to Server 1:
+Establish password less ssh connection
+$ sudo passwd ubuntu
+( lets give the password as pavani only )
+$ sudo vim /etc/ssh/sshd_config
+change 
+PasswordAuthentication yes
+Save and QUIT
+$ sudo service ssh restart
+$ exit
+Repeat the same steps in server2 and server3
+++++++++++++++++
+Now, Connect to controller
+Now , We need to generate ssh connections
+$ ssh-keygen
+Now copy the key to managed nodes
+$ ssh-copy-id ubuntu@172.31.33.49 ( private Ip of server1 )
+$ ssh-copy-id ubuntu@172.31.40.194( private Ip of server2 )
+$ ssh-copy-id ubuntu@ 172.31.45.56( private Ip of server3 )
+Installing ansible now
+Connect to controller.
+$ sudo apt-get install software-properties-common
+( software-properties-common , is a base package which is required to install ansible )
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt-get update
+$ sudo apt-get install -y ansible
++++++++++++++++++
+To check ther version of ansible
+$ ansible --version
+Write the ip address of nodes in the inventory file
+$ cd /etc/ansible
+$ ls
+$ sudo vim hosts
+insert the private ip addresss of 3 servers
+172.31.33.49
+172.31.40.194
+172.31.45.56
+
+save and quit
+$ ls -la ( to see the list in the current machine )
+$ ansible all -a 'ls -la' ( you will get the list of the files in all managed nodes )
